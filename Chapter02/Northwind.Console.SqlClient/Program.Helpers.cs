@@ -1,4 +1,7 @@
-﻿using System.Globalization;
+﻿using Microsoft.Data.SqlClient;
+using System.Collections;
+using System.Globalization;
+using System.Text.Json.Serialization;
 
 partial class Program
 {
@@ -20,4 +23,27 @@ partial class Program
         WriteLine(value);
         ForegroundColor = previousColor;
     }
+
+    private static void OutputStatistics(SqlConnection connection)
+    {
+        string[] includeKeys =
+        [
+            //"BytesSent", "BytesRecieved", "ConnectionTime", "SelectRows"
+        ];
+
+        IDictionary staticstics = connection.RetrieveStatistics();
+
+        foreach (object? key in staticstics.Keys)
+        {
+            if(includeKeys.Length == 0 || includeKeys.Contains(key))
+            {
+                if (int.TryParse(staticstics[key]?.ToString(), out int value))
+                {
+                    WriteLineInColor($"{key}: {value:N0}", ConsoleColor.Cyan);
+                }
+            }
+        }
+
+    }
+
 }
