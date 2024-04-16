@@ -1,5 +1,7 @@
 ﻿using Microsoft.Data.SqlClient; // To use SqlConnection and so on.
-using System.Data; //CommandType
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.Data;
+using System.Runtime.Serialization; //CommandType
 
 ConfigureConsole();
 
@@ -21,7 +23,7 @@ WriteLine("  3 – Azure SQL Edge");
 WriteLine();
 Write("Press a key: ");
 ConsoleKey key = ReadKey().Key;
-WriteLine(); 
+WriteLine();
 WriteLine();
 
 switch (key)
@@ -48,7 +50,7 @@ WriteLine("  2 – SQL Login, for example, sa");
 WriteLine();
 Write("Press a key: ");
 key = ReadKey().Key;
-WriteLine(); 
+WriteLine();
 WriteLine();
 
 if (key is ConsoleKey.D1 or ConsoleKey.NumPad1)
@@ -108,7 +110,15 @@ catch (SqlException ex)
 
 #region Collect User Input, Show Output
 
-WriteLine("Enter a unit price: ");
+SqlCommand cmd = connection.CreateCommand();
+WriteLine("Execute command uing: ");
+WriteLine("     1 - Text");
+WriteLine("     2 - Stored Procedure");
+WriteLine("Press a key");
+key = ReadKey().Key;
+WriteLine(); WriteLine();
+
+Write("Enter a unit price: ");
 string? priceText = ReadLine();
 if (!decimal.TryParse(priceText, out decimal price))
 {
@@ -116,28 +126,72 @@ if (!decimal.TryParse(priceText, out decimal price))
     return;
 }
 
-SqlCommand cmd = connection.CreateCommand();
-cmd.CommandType = CommandType.Text;
-cmd.CommandText = "SELECT ProductId, ProductName, UnitPrice FROM Products"
-    + " WHERE UnitPrice >= @minimumPrice";
-cmd.Parameters.AddWithValue("minimumPrice", price);
+SqlParameter p1 = new(), p2 = new(), p3 = new();
+
+if (key is ConsoleKey.D1 or ConsoleKey.NumPad1)
+{
+    cmd.CommandType = CommandType.Text;
+    cmd.CommandText = "SELECT ProductId, ProductName, UnitPrice FROM Products"
+        + " WHERE UnitPrice >= @minimumPrice";
+    cmd.Parameters.AddWithValue("minimumPrice", price);
+}
+else if (key is ConsoleKey.D2 or ConsoleKey.NumPad2)
+{
+    cmd.CommandType = CommandType.StoredProcedure;
+    cmd.CommandText = "GetExpensiveProducts";
+
+    p1 = new()
+    {
+        ParameterName = "price",
+        SqlDbType = SqlDbType.Money,
+        SqlValue = price
+    };
+    p2 = new()
+    {
+        Direction = ParameterDirection.Output,
+        ParameterName = "count",
+        SqlDbType = SqlDbType.Int
+    };
+    p3 = new()
+    {
+        Direction = ParameterDirection.ReturnValue,
+        ParameterName = "rv",
+        SqlDbType = SqlDbType.Int
+    };
+
+    cmd.Parameters.AddRange([p1, p2, p3]);
+}
 
 //SqlDataReader reader = cmd.ExecuteReader();
 SqlDataReader reader = await cmd.ExecuteReaderAsync();
-
 string horizontalLine = new('-', 60);
+
+
+
 WriteLine(horizontalLine);
+WriteLine("| {0,5} | {1,-35} | {2,10:C}", "Id", "Name", "Price");
+WriteLine(horizontalLine);
+
 
 while (await reader.ReadAsync())
 {
+    
     WriteLine("| {0,5} | {1,-35} | {2,10:C}",
-        reader.GetInt32("ProductId"),
-        reader.GetString("ProductName"),
-        reader.GetDecimal("UnitPrice"));
+    await reader.GetFieldValueAsync<int>("ProductId"),
+    await reader.GetFieldValueAsync<string>("ProductName"),
+    await reader.GetFieldValueAsync<decimal>("UnitPrice"));
 }
-await reader.CloseAsync();
 WriteLine(horizontalLine);
 
+
+await reader.CloseAsync(); //Closing the reader is required before reading parameters
+
+if (key is ConsoleKey.D2 or ConsoleKey.NumPad2)
+{
+    WriteLine($"Output count: {p2.Value}");
+    WriteLine($"Return value: {p3.Value}");
+
+}
 
 #endregion
 
