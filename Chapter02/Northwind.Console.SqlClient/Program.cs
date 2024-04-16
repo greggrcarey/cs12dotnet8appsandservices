@@ -1,7 +1,11 @@
 ﻿using Microsoft.Data.SqlClient; // To use SqlConnection and so on.
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Data;
+using System.Formats.Asn1;
 using System.Runtime.Serialization; //CommandType
+using System.Text.Json; //UTF8JsonWriter, JsonSerializer
+using static System.Environment;
+using static System.IO.Path;
 
 ConfigureConsole();
 
@@ -164,18 +168,41 @@ else if (key is ConsoleKey.D2 or ConsoleKey.NumPad2)
 
 //SqlDataReader reader = cmd.ExecuteReader();
 SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+string jsonPath = Combine(CurrentDirectory, "product.json");
+await using (FileStream jsonStream = File.Create(jsonPath))
+{
+    Utf8JsonWriter utf8JsonWriter = new Utf8JsonWriter(jsonStream);
+    utf8JsonWriter.WriteStartArray();
+    while (await reader.ReadAsync())
+    {
+        WriteLine("| {0,5} | {1,-35} | {2,10:C} |",
+        await reader.GetFieldValueAsync<int>("ProductId"),
+        await reader.GetFieldValueAsync<string>("ProductName"),
+        await reader.GetFieldValueAsync<decimal>("UnitPrice"));
+        
+        utf8JsonWriter.WriteStartObject();
+        utf8JsonWriter.WriteNumber("productId",await reader.GetFieldValueAsync<int>("ProductId"));
+        utf8JsonWriter.WriteString("productName", await reader.GetFieldValueAsync<string>("ProductName"));
+        utf8JsonWriter.WriteNumber("unitPrice",await reader.GetFieldValueAsync<decimal>("UnitPrice"));
+        utf8JsonWriter.WriteEndObject();
+    }
+    utf8JsonWriter.WriteEndArray();
+    utf8JsonWriter.Flush();
+    jsonStream.Close();
+
+}
+WriteLineInColor($"File written to: {jsonPath}", ConsoleColor.DarkGreen);
+
+
 string horizontalLine = new('-', 60);
-
-
 
 WriteLine(horizontalLine);
 WriteLine("| {0,5} | {1,-35} | {2,10:C}", "Id", "Name", "Price");
 WriteLine(horizontalLine);
 
-
 while (await reader.ReadAsync())
 {
-    
     WriteLine("| {0,5} | {1,-35} | {2,10:C}",
     await reader.GetFieldValueAsync<int>("ProductId"),
     await reader.GetFieldValueAsync<string>("ProductName"),
@@ -183,14 +210,12 @@ while (await reader.ReadAsync())
 }
 WriteLine(horizontalLine);
 
-
 await reader.CloseAsync(); //Closing the reader is required before reading parameters
 
 if (key is ConsoleKey.D2 or ConsoleKey.NumPad2)
 {
     WriteLine($"Output count: {p2.Value}");
     WriteLine($"Return value: {p3.Value}");
-
 }
 
 #endregion
