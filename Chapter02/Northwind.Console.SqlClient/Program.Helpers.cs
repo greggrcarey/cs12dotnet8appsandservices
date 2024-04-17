@@ -28,7 +28,7 @@ partial class Program
     {
         string[] includeKeys =
         [
-            //"BytesSent", "BytesRecieved", "ConnectionTime", "SelectRows"
+            "BytesSent", "BytesRecieved", "ConnectionTime", "SelectRows"
         ];
 
         IDictionary staticstics = connection.RetrieveStatistics();

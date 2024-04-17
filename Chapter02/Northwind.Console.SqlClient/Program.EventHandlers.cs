@@ -5,7 +5,7 @@ partial class Program
 {
     private static void Connection_StateChange(object sender, StateChangeEventArgs e)
     {
-        WriteLineInColor($"State chagne from {e.OriginalState} to {e.CurrentState}.", ConsoleColor.DarkYellow);
+        WriteLineInColor($"State changed from {e.OriginalState} to {e.CurrentState}.", ConsoleColor.DarkYellow);
 
     }
 
