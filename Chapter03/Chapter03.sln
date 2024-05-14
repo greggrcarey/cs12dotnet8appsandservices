@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Console.EFcore", "Northwind.Console.EFcore\Northwind.Console.EFcore.csproj", "{94111756-21A0-46AD-BC9E-8873C9D0CBEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.Console.EFcore", "Northwind.Console.EFcore\Northwind.Console.EFcore.csproj", "{94111756-21A0-46AD-BC9E-8873C9D0CBEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Console.HierarchMapping", "Northwind.Console.HierarchMapping\Northwind.Console.HierarchMapping.csproj", "{309A78DB-D214-4585-9204-2FE2F2C333CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{94111756-21A0-46AD-BC9E-8873C9D0CBEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94111756-21A0-46AD-BC9E-8873C9D0CBEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94111756-21A0-46AD-BC9E-8873C9D0CBEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{309A78DB-D214-4585-9204-2FE2F2C333CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{309A78DB-D214-4585-9204-2FE2F2C333CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{309A78DB-D214-4585-9204-2FE2F2C333CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{309A78DB-D214-4585-9204-2FE2F2C333CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
