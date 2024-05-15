@@ -5,7 +5,13 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.Console.EFcore", "Northwind.Console.EFcore\Northwind.Console.EFcore.csproj", "{94111756-21A0-46AD-BC9E-8873C9D0CBEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Console.HierarchMapping", "Northwind.Console.HierarchMapping\Northwind.Console.HierarchMapping.csproj", "{309A78DB-D214-4585-9204-2FE2F2C333CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.Console.HierarchMapping", "Northwind.Console.HierarchMapping\Northwind.Console.HierarchMapping.csproj", "{309A78DB-D214-4585-9204-2FE2F2C333CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Common.EntityModels.SqlServer", "Northwind.Common.EntityModels.SqlServer\Northwind.Common.EntityModels.SqlServer.csproj", "{42161D98-2645-4D61-9869-6438F0DE2A61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Common.DataContext.SqlServer", "Northwind.Common.DataContext.SqlServer\Northwind.Common.DataContext.SqlServer.csproj", "{5016ED7E-1823-45DD-A2D7-1F86A6F22DCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Common.EntityModels.Tests", "Northwind.Common.EntityModels.Tests\Northwind.Common.EntityModels.Tests.csproj", "{AF045B40-B154-4A37-BE7E-52247F9B2306}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{309A78DB-D214-4585-9204-2FE2F2C333CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{309A78DB-D214-4585-9204-2FE2F2C333CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{309A78DB-D214-4585-9204-2FE2F2C333CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42161D98-2645-4D61-9869-6438F0DE2A61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42161D98-2645-4D61-9869-6438F0DE2A61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42161D98-2645-4D61-9869-6438F0DE2A61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42161D98-2645-4D61-9869-6438F0DE2A61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5016ED7E-1823-45DD-A2D7-1F86A6F22DCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5016ED7E-1823-45DD-A2D7-1F86A6F22DCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5016ED7E-1823-45DD-A2D7-1F86A6F22DCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5016ED7E-1823-45DD-A2D7-1F86A6F22DCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF045B40-B154-4A37-BE7E-52247F9B2306}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF045B40-B154-4A37-BE7E-52247F9B2306}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF045B40-B154-4A37-BE7E-52247F9B2306}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF045B40-B154-4A37-BE7E-52247F9B2306}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
