@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34902.65
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.CosmosDb.SqlApi", "Northwind.CosmosDb.SqlApi\Northwind.CosmosDb.SqlApi.csproj", "{F2E06373-0E7A-44DB-9EB9-F18F36ECFA5E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.Common.DataContext.SqlServer", "..\Chapter03\Northwind.Common.DataContext.SqlServer\Northwind.Common.DataContext.SqlServer.csproj", "{C98D6AC0-3B14-41F9-B0C0-BCE3601DC34B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F2E06373-0E7A-44DB-9EB9-F18F36ECFA5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2E06373-0E7A-44DB-9EB9-F18F36ECFA5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2E06373-0E7A-44DB-9EB9-F18F36ECFA5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2E06373-0E7A-44DB-9EB9-F18F36ECFA5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C98D6AC0-3B14-41F9-B0C0-BCE3601DC34B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C98D6AC0-3B14-41F9-B0C0-BCE3601DC34B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C98D6AC0-3B14-41F9-B0C0-BCE3601DC34B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C98D6AC0-3B14-41F9-B0C0-BCE3601DC34B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {37920B8B-60F4-4B3B-AF05-E766E7E014BA}
+	EndGlobalSection
+EndGlobal
