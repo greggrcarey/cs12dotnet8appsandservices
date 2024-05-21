@@ -95,7 +95,7 @@ partial class Program
 
         try
         {
-            using CosmosClient client = new CosmosClient(accountEndpoint: config["endpointUri"],
+            using CosmosClient client = new(accountEndpoint: config["endpointUri"],
                 authKeyOrResourceToken: config["primaryEndpoint"]);
             var container = client.GetContainer(databaseId: "Northwind", containerId: "Products");
 
@@ -194,6 +194,56 @@ partial class Program
             WriteLine($"Error: {ex.GetType()} says: {ex.Message}");
         }
         WriteLine("Total requests charge: {0:N2} RUs", totalCharge);
+    }
+
+    static async Task ListProductItems(string sqlText = "SELECT * FROM c")
+    {
+        SectionTitle("Listing Product Items");
+
+        try
+        {
+            using var client = new CosmosClient(accountEndpoint: config["endpointUri"],
+                authKeyOrResourceToken: config["primaryEndpoint"]);
+
+            Container container = client.GetContainer(databaseId: "Northwind", containerId: "Products");
+
+            WriteLine($"Running Query {sqlText}");
+
+            QueryDefinition query = new(sqlText);
+
+            using FeedIterator<ProductCosmos> resultsIterator = container.GetItemQueryIterator<ProductCosmos>(query);
+
+            if (!resultsIterator.HasMoreResults)
+            {
+                WriteLine("No results found");
+            }
+
+            while (resultsIterator.HasMoreResults)
+            {
+                FeedResponse<ProductCosmos> products = await resultsIterator.ReadNextAsync();
+
+                WriteLine($"Status code: {products.StatusCode}, Request Charge: {products.RequestCharge} RUs");
+
+                WriteLine($"{products.Count} products found");
+
+                foreach (ProductCosmos product in products)
+                {
+                    WriteLine($"id: {product.id}, productName: {product.productName}, unitPrice: {product.unitPrice.ToString()}");
+
+                }
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            WriteLine($"Error: {ex.Message}");
+            WriteLine("Hint: If you are using the Azure Cosmos Emulator then please make sure it is running.");
+        }
+        catch (Exception ex)
+        {
+            WriteLine("Error: {0} says {1}",
+            arg0: ex.GetType(),
+            arg1: ex.Message);
+        }
     }
 
 }
