@@ -1,18 +1,22 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using System.Net;
-using System.Numerics;
-
+using Northwind.EntityModels;//NorthwindContext etc.
+using Northwind.CosmosDb.Items;//Cosmos Types
+using Microsoft.EntityFrameworkCore;//Include Extension Methods
 
 
 
 partial class Program
 {
+    private static readonly IConfigurationRoot config = new ConfigurationBuilder()
+    .AddUserSecrets<Program>()
+    .Build();
+
+
     static async Task CreateCosmosResources()
     {
-        IConfigurationRoot config = new ConfigurationBuilder()
-        .AddUserSecrets<Program>()
-        .Build();
+    
         SectionTitle("Creating Cosmos resource");
 
         try
@@ -81,6 +85,121 @@ partial class Program
             arg1: ex.Message);
         }
 
+    }
+
+    static async Task CreateProductItems()
+    {
+        SectionTitle("Creating Product Items");
+
+        double totalCharge = 0.0;
+
+        try
+        {
+            using (CosmosClient client = new CosmosClient(accountEndpoint: config["endpointUri"],
+                authKeyOrResourceToken: config["primaryEndpoint"]))
+            {
+                var container = client.GetContainer(databaseId: "Northwind", containerId: "Products");
+
+                using(NorthwindContext db = new ()) 
+                {
+                    if(!db.Database.CanConnect())
+                    {
+                        WriteLine($"Cannot connect to the SQL Server database to " +
+                            $"read products using the connection string: {db.Database.GetConnectionString()}");
+                        return;
+                    }
+
+                    ProductCosmos[] products = db.Products
+
+                        //related data for embedding
+                        .Include(p => p.Category)
+                        .Include(p => p.Supplier)
+
+                        //Filter any product with null category or supplier 
+                        //to avoid null warnings
+                        .Where(p => (p.Category != null) && (p.Supplier != null))
+                        .Select(p => new ProductCosmos
+                        {
+                            id = p.ProductId.ToString(),
+                            productId = p.ProductId.ToString(),
+                            productName = p.ProductName,
+                            quantityPerUnit = p.QuantityPerUnit,
+
+                            //If the related category is null, store null
+                            //else map the category to the Cosmos model
+                            category = p.Category == null ? null:
+                            new CategoryCosmos
+                            {
+                                categoryId = p.Category.CategoryId,
+                                categoryName = p.Category.CategoryName,
+                                description = p.Category.Description,
+                            },
+                            supplier = p.Supplier == null ? null :
+                            new SupplierCosmos
+                            {
+                                supplierId = p.Supplier.SupplierId,
+                                companyName = p.Supplier.CompanyName,
+                                contactTitle = p.Supplier.ContactTitle,
+                                address = p.Supplier.Address,
+                                city = p.Supplier.City,
+                                country = p.Supplier.Country,
+                                postalCode = p.Supplier.PostalCode,
+                                region = p.Supplier.Region,
+                                phone = p.Supplier.Phone,
+                                fax = p.Supplier.Fax,
+                                homePage = p.Supplier.HomePage,
+                            },
+                            unitPrice = p.UnitPrice,
+                            unitsInStock = p.UnitsInStock,
+                            reorderLevel = p.ReorderLevel,
+                            unitsOnOrder = p.UnitsOnOrder,
+                            discontinued = p.Discontinued,
+
+                        }).ToArray();
+
+                    foreach(ProductCosmos product in products)
+                    {
+                        try
+                        {
+                            ItemResponse<ProductCosmos> productResponse = await container.ReadItemAsync<ProductCosmos>(
+                                id: product.id, new PartitionKey(product.id));
+
+                            WriteLine($"Item with id: {productResponse.Resource.id} exists. " +
+                                $"Query consumed {productResponse.RequestCharge} RUs");
+
+                            totalCharge += productResponse.RequestCharge;
+                        }
+                        catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+                        {
+                            //Create item if not exists
+                            ItemResponse<ProductCosmos> productResponse = await container.CreateItemAsync(product);
+
+                            WriteLine($"Created item with id: {productResponse.Resource.id}. " +
+                               $"Insert consumed {productResponse.RequestCharge} RUs");
+
+                            totalCharge += productResponse.RequestCharge;
+                        }
+                        catch(Exception ex)
+                        {
+                            WriteLine($"Error: {ex.GetType()} says: {ex.Message}");
+                        }
+                        
+                    }
+
+                }
+
+            }
+        }
+        catch (HttpRequestException ex) 
+        {
+            WriteLine($"Error: {ex.Message}");
+            WriteLine("Hint: Check that your Cosmos Db Emulator is running");
+        }
+        catch (Exception ex) 
+        {
+            WriteLine($"Error: {ex.GetType()} says: {ex.Message}");
+        }
+        WriteLine("Total requests charge: {0:N2} RUs", totalCharge);
     }
 
 }
