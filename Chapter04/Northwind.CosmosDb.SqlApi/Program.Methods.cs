@@ -246,4 +246,56 @@ partial class Program
         }
     }
 
+    static async Task DeleteProductItems()
+    {
+        SectionTitle("Deleting Product Items");
+
+        double totalCharge = 0.0;
+
+        try
+        {
+            using CosmosClient client = new(accountEndpoint: config["endpointUri"],
+                authKeyOrResourceToken: config["primaryEndpoint"]);
+
+            Container container = client.GetContainer(databaseId: "Northwind", containerId: "Products");
+
+            string sqlText = "SELECT * FROM c";
+
+            WriteLine($"Running SQL text: {sqlText}");
+
+            QueryDefinition query = new(sqlText);
+
+            using FeedIterator<ProductCosmos> resultsIterator = container.GetItemQueryIterator<ProductCosmos>(query);
+
+            while (resultsIterator.HasMoreResults)
+            {
+                FeedResponse<ProductCosmos> products = await resultsIterator.ReadNextAsync();
+
+                foreach (ProductCosmos product in products)
+                {
+                    WriteLine($"Delete id: {product.id}, productName: {product.productName}");
+
+                    ItemResponse<ProductCosmos> response = await container.DeleteItemAsync<ProductCosmos>(id: product.id, partitionKey: new(product.id));
+
+                    WriteLine($"Status Code: {response.StatusCode}, Request charge: {response.RequestCharge}");
+
+                    totalCharge += response.RequestCharge;
+
+                }
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            WriteLine($"Error: {ex.Message}");
+            WriteLine("Hint: If you are using the Azure Cosmos Emulator then please make sure it is running.");
+        }
+        catch (Exception ex)
+        {
+            WriteLine("Error: {0} says {1}",
+            arg0: ex.GetType(),
+            arg1: ex.Message);
+        }
+        WriteLine("Total requests charge: {0:N2} RUs", totalCharge);
+    }
+
 }
