@@ -2,8 +2,13 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Octokit;
+using System.Runtime.CompilerServices;
 
 namespace GitHubActivityReport;
+
+/*
+ tutorial from this link: https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/generate-consume-asynchronous-stream
+ */
 
 // <SnippetStarterGraphQLRequest>
 public class GraphQLRequest
@@ -74,8 +79,9 @@ class Program
             Credentials = new Credentials(key)
         };
         int num = 0;
+        CancellationTokenSource cancellationToken = new();
 
-        await foreach (var issue in RunPagedQueryAsync(client, PagedIssueQuery, "docs"))
+        await foreach (var issue in RunPagedQueryAsync(client, PagedIssueQuery, "docs").WithCancellation(cancellationToken.Token))
         {
             Console.WriteLine(issue);
             Console.WriteLine($"Recieved {++num} issues in total");
@@ -128,7 +134,8 @@ class Program
     // <SnippetRunPagedQuery>
     private static async IAsyncEnumerable<JToken> RunPagedQueryAsync(GitHubClient client,
                                                                      string queryText,
-                                                                     string repoName)
+                                                                     string repoName,
+                                                                     [EnumeratorCancellation] CancellationToken cancellation = default)
     {
         var issueAndPRQuery = new GraphQLRequest
         {
