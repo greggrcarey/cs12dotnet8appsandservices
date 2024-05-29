@@ -73,31 +73,62 @@ class Program
         {
             Credentials = new Credentials(key)
         };
+        int num = 0;
 
-        // <SnippetEnumerateOldStyle>
-        var progressReporter = new progressStatus((num) =>
+        await foreach (var issue in RunPagedQueryAsync(client, PagedIssueQuery, "docs"))
         {
-            Console.WriteLine($"Received {num} issues in total");
-        });
-        CancellationTokenSource cancellationSource = new CancellationTokenSource();
-
-        try
-        {
-            var results = await RunPagedQueryAsync(client, PagedIssueQuery, "docs",
-                cancellationSource.Token, progressReporter);
-            foreach (var issue in results)
-                Console.WriteLine(issue);
+            Console.WriteLine(issue);
+            Console.WriteLine($"Recieved {++num} issues in total");
         }
-        catch (OperationCanceledException)
-        {
-            Console.WriteLine("Work has been cancelled");
-        }
-        // </SnippetEnumerateOldStyle>
+    
     }
     // </SnippetStarterAppMain>
 
+    //// <SnippetRunPagedQuery>
+    //private static async Task<JArray> RunPagedQueryAsync(GitHubClient client, string queryText, string repoName, CancellationToken cancel, IProgress<int> progress)
+    //{
+    //    var issueAndPRQuery = new GraphQLRequest
+    //    {
+    //        Query = queryText
+    //    };
+    //    issueAndPRQuery.Variables["repo_name"] = repoName;
+
+    //    JArray finalResults = [];
+    //    bool hasMorePages = true;
+    //    int pagesReturned = 0;
+    //    int issuesReturned = 0;
+
+    //    // Stop with 10 pages, because these are large repos:
+    //    while (hasMorePages && (pagesReturned++ < 10))
+    //    {
+    //        var postBody = issueAndPRQuery.ToJsonText();
+    //        var response = await client.Connection.Post<string>(new Uri("https://api.github.com/graphql"),
+    //            postBody, "application/json", "application/json");
+
+    //        JObject results = JObject.Parse(response.HttpResponse.Body.ToString()!);
+
+    //        int totalCount = (int)issues(results)["totalCount"]!;
+    //        hasMorePages = (bool)pageInfo(results)["hasPreviousPage"]!;
+    //        issueAndPRQuery.Variables["start_cursor"] = pageInfo(results)["startCursor"]!.ToString();
+    //        issuesReturned += issues(results)["nodes"]!.Count();
+    //        // <SnippetProcessPage>
+    //        finalResults.Merge(issues(results)["nodes"]!);
+    //        progress?.Report(issuesReturned);
+    //        cancel.ThrowIfCancellationRequested();
+    //        // </SnippetProcessPage>
+    //    }
+    //    return finalResults;
+
+    //    JObject issues(JObject result) => (JObject)result["data"]!["repository"]!["issues"]!;
+    //    JObject pageInfo(JObject result) => (JObject)issues(result)["pageInfo"]!;
+    //}
+    //// </SnippetRunPagedQuery>
+
+
     // <SnippetRunPagedQuery>
-    private static async Task<JArray> RunPagedQueryAsync(GitHubClient client, string queryText, string repoName, CancellationToken cancel, IProgress<int> progress)
+    private static async IAsyncEnumerable<JToken> RunPagedQueryAsync(GitHubClient client,
+                                                                     string queryText,
+                                                                     string repoName)
     {
         var issueAndPRQuery = new GraphQLRequest
         {
@@ -105,7 +136,6 @@ class Program
         };
         issueAndPRQuery.Variables["repo_name"] = repoName;
 
-        JArray finalResults = new JArray();
         bool hasMorePages = true;
         int pagesReturned = 0;
         int issuesReturned = 0;
@@ -124,17 +154,16 @@ class Program
             issueAndPRQuery.Variables["start_cursor"] = pageInfo(results)["startCursor"]!.ToString();
             issuesReturned += issues(results)["nodes"]!.Count();
             // <SnippetProcessPage>
-            finalResults.Merge(issues(results)["nodes"]!);
-            progress?.Report(issuesReturned);
-            cancel.ThrowIfCancellationRequested();
+            foreach (JToken issue in issues(results)["nodes"]!)
+                yield return issue;
             // </SnippetProcessPage>
         }
-        return finalResults;
 
         JObject issues(JObject result) => (JObject)result["data"]!["repository"]!["issues"]!;
         JObject pageInfo(JObject result) => (JObject)issues(result)["pageInfo"]!;
     }
     // </SnippetRunPagedQuery>
+
 
     private static string GetEnvVariable(string item, string error, string defaultValue)
     {
