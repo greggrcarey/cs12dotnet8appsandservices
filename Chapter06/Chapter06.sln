@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkingWithImages", "WorkingWithImages\WorkingWithImages.csproj", "{83C460AC-EFBA-48EE-9C6F-48A9498D2F7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkingWithImages", "WorkingWithImages\WorkingWithImages.csproj", "{83C460AC-EFBA-48EE-9C6F-48A9498D2F7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilogging", "Serilogging\Serilogging.csproj", "{553948E6-7998-4324-8BC5-58378F80BE21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MappingObject.Models", "MappingObject.Models\MappingObject.Models.csproj", "{FA09635C-C610-4246-8A65-8418F49C2E44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MappingObject.Mappers", "MappingObject.Mappers\MappingObject.Mappers.csproj", "{AC235E03-C764-43BE-882E-DE617D4FB7C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MappingObjects.Tests", "MappingObjects.Tests\MappingObjects.Tests.csproj", "{EA0E32FB-7AF6-4551-9834-878C76DC9B58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MappingObjects.Console", "MappingObjects.Console\MappingObjects.Console.csproj", "{6C93C74F-EF9B-4B33-9525-F5C666E2045E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +25,26 @@ Global
 		{83C460AC-EFBA-48EE-9C6F-48A9498D2F7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83C460AC-EFBA-48EE-9C6F-48A9498D2F7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83C460AC-EFBA-48EE-9C6F-48A9498D2F7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{553948E6-7998-4324-8BC5-58378F80BE21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{553948E6-7998-4324-8BC5-58378F80BE21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{553948E6-7998-4324-8BC5-58378F80BE21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{553948E6-7998-4324-8BC5-58378F80BE21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA09635C-C610-4246-8A65-8418F49C2E44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA09635C-C610-4246-8A65-8418F49C2E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA09635C-C610-4246-8A65-8418F49C2E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA09635C-C610-4246-8A65-8418F49C2E44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC235E03-C764-43BE-882E-DE617D4FB7C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC235E03-C764-43BE-882E-DE617D4FB7C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC235E03-C764-43BE-882E-DE617D4FB7C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC235E03-C764-43BE-882E-DE617D4FB7C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA0E32FB-7AF6-4551-9834-878C76DC9B58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA0E32FB-7AF6-4551-9834-878C76DC9B58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA0E32FB-7AF6-4551-9834-878C76DC9B58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA0E32FB-7AF6-4551-9834-878C76DC9B58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C93C74F-EF9B-4B33-9525-F5C666E2045E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C93C74F-EF9B-4B33-9525-F5C666E2045E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C93C74F-EF9B-4B33-9525-F5C666E2045E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C93C74F-EF9B-4B33-9525-F5C666E2045E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
