@@ -1,4 +1,4 @@
-POST https://localhost:7064/api/products/
+POST https://localhost:5081/api/products/
 Content-Type: application/json
 {
   "productName": "Harry's Hamburgers",

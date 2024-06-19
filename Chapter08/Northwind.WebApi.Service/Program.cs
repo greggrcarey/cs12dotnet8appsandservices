@@ -10,6 +10,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddNorthwindContext();
 builder.Services.AddCustomHttpLogging();
+builder.Services.AddCustomCors();
+
 
 
 var app = builder.Build();
@@ -24,6 +26,8 @@ app.UseHttpsRedirection();
 
 app.UseHttpLogging();
 
+//Use this policy for the whole app 
+app.UseCors(policyName: "Northwind.Mvc.Policy");
 
 app.MapGets() // Default pageSize: 10.
   .MapPosts()

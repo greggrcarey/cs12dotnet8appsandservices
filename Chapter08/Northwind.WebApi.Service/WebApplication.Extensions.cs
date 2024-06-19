@@ -123,6 +123,20 @@ public static class WebApplicationExtensions
         return app;
     }
 
+    public static IServiceCollection AddCustomCors(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy(name: "Northwind.Mvc.Policy",
+              policy =>
+              {
+                  policy.WithOrigins("https://localhost:5082");
+              });
+        });
+        return services;
+    }
+
+
 
 
 

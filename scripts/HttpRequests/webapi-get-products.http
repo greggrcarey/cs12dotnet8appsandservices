@@ -1,5 +1,5 @@
 ### Configure a variable for the web service base address.
-@base_address = https://localhost:7064/api/products/
+@base_address = https://localhost:5081/api/products/
 ### Get first page of 10 products that are in stock and not discontinued.
 GET {{base_address}} 
 ### Get third page of 10 products that are in stock and not discontinued
