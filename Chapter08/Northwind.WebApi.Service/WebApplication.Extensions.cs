@@ -60,7 +60,8 @@ public static class WebApplicationExtensions
             db.Products.Where(p => p.ProductName.Contains(name)))
           .WithName("GetProductsByName")
           .WithOpenApi()
-          .Produces<Product[]>(StatusCodes.Status200OK);
+          .Produces<Product[]>(StatusCodes.Status200OK)
+          .RequireCors(policyName: "Northwind.Mvc.Policy"); //re
         return app;
     }
 

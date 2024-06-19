@@ -27,7 +27,11 @@ app.UseHttpsRedirection();
 app.UseHttpLogging();
 
 //Use this policy for the whole app 
-app.UseCors(policyName: "Northwind.Mvc.Policy");
+// app.UseCors(policyName: "Northwind.Mvc.Policy");
+
+// Without a named policy the middleware is added but not active.
+app.UseCors();
+
 
 app.MapGets() // Default pageSize: 10.
   .MapPosts()
