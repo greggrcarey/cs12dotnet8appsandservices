@@ -11,6 +11,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddNorthwindContext();
 builder.Services.AddCustomHttpLogging();
 builder.Services.AddCustomCors();
+builder.Services.AddCustomRateLimiting(builder.Configuration);
+
 
 
 
@@ -25,12 +27,15 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseHttpLogging();
+await app.UseCustomClientRateLimiting();
 
 //Use this policy for the whole app 
 // app.UseCors(policyName: "Northwind.Mvc.Policy");
 
 // Without a named policy the middleware is added but not active.
 app.UseCors();
+
+
 
 
 app.MapGets() // Default pageSize: 10.

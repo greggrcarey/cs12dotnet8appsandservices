@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults; // To use Results.
 using Microsoft.AspNetCore.Mvc; // To use [FromServices] and so on.
 using Northwind.EntityModels; // To use NorthwindContext, Product.
+using AspNetCoreRateLimit; // To use IClientPolicyStore and so on.
+
 
 namespace Packt.Extensions;
 public static class WebApplicationExtensions
@@ -137,8 +139,15 @@ public static class WebApplicationExtensions
         return services;
     }
 
+    public static async Task UseCustomClientRateLimiting(this WebApplication app)
+    {
+        using (IServiceScope scope = app.Services.CreateScope())
+        {
+            IClientPolicyStore clientPolicyStore = scope.ServiceProvider
+              .GetRequiredService<IClientPolicyStore>();
 
-
-
-
+            await clientPolicyStore.SeedAsync();
+        }
+        app.UseClientRateLimiting();
+    }
 }
