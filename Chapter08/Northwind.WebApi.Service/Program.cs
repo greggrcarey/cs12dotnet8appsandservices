@@ -46,4 +46,3 @@ app.MapGets() // Default pageSize: 10.
 app.Run();
 
 
-//Creating a web page JavaScript client chapter 8
