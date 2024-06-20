@@ -6,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(defaultScheme: "Bearer").AddJwtBearer();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddNorthwindContext();
@@ -17,6 +19,7 @@ builder.Services.AddCustomRateLimiting(builder.Configuration);
 
 
 var app = builder.Build();
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

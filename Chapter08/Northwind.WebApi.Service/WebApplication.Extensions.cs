@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults; // To use Results.
 using Microsoft.AspNetCore.Mvc; // To use [FromServices] and so on.
+using System.Security.Claims; // To use ClaimsPrincipal.
 using Northwind.EntityModels; // To use NorthwindContext, Product.
 using AspNetCoreRateLimit; // To use IClientPolicyStore and so on.
 
@@ -11,6 +12,10 @@ public static class WebApplicationExtensions
     {
         app.MapGet("/", () => "Hello World!")
           .ExcludeFromDescription();
+
+        app.MapGet("/secret", (ClaimsPrincipal user) =>
+        string.Format("Welcome, {0}. The secret ingredient is love.", user.Identity?.Name ?? "secure user"))
+            .RequireAuthorization();
 
         app.MapGet("api/products", ( [FromServices] NorthwindContext db, [FromQuery] int? page) =>
           db.Products
