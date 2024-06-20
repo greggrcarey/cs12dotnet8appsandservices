@@ -1,0 +1,11 @@
+@Northwind.MinimalAot.Service_HostAddress = http://localhost:5272
+
+GET {{Northwind.MinimalAot.Service_HostAddress}}/todos/
+Accept: application/json
+
+###
+
+GET {{Northwind.MinimalAot.Service_HostAddress}}/todos/1
+Accept: application/json
+
+###
