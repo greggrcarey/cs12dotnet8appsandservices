@@ -1,12 +1,14 @@
 ﻿using Microsoft.Data.SqlClient; // To use SqlConnectionStringBuilder.
 using Microsoft.EntityFrameworkCore; // ToQueryString, GetConnectionString
 using Northwind.Models; // To use NorthwindDb.
-SqlConnectionStringBuilder builder = new();
-builder.InitialCatalog = "Northwind";
-builder.MultipleActiveResultSets = true;
-builder.Encrypt = true;
-builder.TrustServerCertificate = true;
-builder.ConnectTimeout = 10;
+SqlConnectionStringBuilder builder = new()
+{
+    InitialCatalog = "Northwind",
+    MultipleActiveResultSets = true,
+    Encrypt = true,
+    TrustServerCertificate = true,
+    ConnectTimeout = 10
+};
 WriteLine("Connect to:");
 WriteLine("  1 - SQL Server on local machine");
 WriteLine("  2 - Azure SQL Database");

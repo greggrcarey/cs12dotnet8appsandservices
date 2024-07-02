@@ -2,15 +2,12 @@
 
 namespace Northwind.Models;
 
-public class HierarchyDb : DbContext
+public class HierarchyDb(DbContextOptions<HierarchyDb> options) : DbContext(options)
 {
     public DbSet<Person>? People { get; set; }
     public DbSet<Student>? Students { get; set; }
     public DbSet<Employee>? Employees { get; set; }
-    public HierarchyDb(DbContextOptions<HierarchyDb> options) : base(options)
-    {
 
-    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Person>()
