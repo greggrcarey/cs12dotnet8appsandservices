@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory; //MemoryCache
 using Microsoft.AspNetCore.Mvc; //[HttpGet] and others
 using Northwind.EntityModels; //NorthwindContext, Product
 
@@ -11,10 +12,14 @@ public class ProductsController : ControllerBase
     private int pageSize = 10;
     private readonly ILogger<ProductsController> _logger;
     private readonly NorthwindContext _db;
-    public ProductsController(ILogger<ProductsController> logger, NorthwindContext context)
+
+    private readonly IMemoryCache _cache;
+    private const string OutOfStockProductsKey = "OOSP";
+    public ProductsController(ILogger<ProductsController> logger, NorthwindContext context, IMemoryCache cache)
     {
         _logger = logger;
         _db = context;
+        _cache = cache;
     }
 
     // GET: api/products
@@ -35,8 +40,29 @@ public class ProductsController : ControllerBase
     [Produces(typeof(Product[]))]
     public IEnumerable<Product> GetOutOfStockProducts()
     {
-        return _db.Products
-          .Where(p => p.UnitsInStock == 0 && !p.Discontinued);
+        //Try to get the cached value
+
+        if(!_cache.TryGetValue(OutOfStockProductsKey, out Product[]? cachedValue))
+        {
+            //If the cached value is not found, get the value from the database
+            cachedValue = [.. _db.Products.Where(p => p.UnitsInStock == 0 && !p.Discontinued)];
+
+            MemoryCacheEntryOptions cacheEntryOptions = new()
+            {
+                SlidingExpiration = TimeSpan.FromSeconds(5),
+                Size = cachedValue?.Length
+            };
+
+            _cache.Set(OutOfStockProductsKey, cachedValue, cacheEntryOptions);
+        }
+
+        MemoryCacheStatistics? stats = _cache.GetCurrentStatistics();
+        string message = $"Memeory cache. Total hits: {stats?.TotalHits}. Estimated size: {stats?.CurrentEstimatedSize}.";
+        _logger.LogInformation(message);
+
+        return cachedValue ?? Enumerable.Empty<Product>();
+
+
     }
 
     // GET: api/products/discontinued
