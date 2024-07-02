@@ -12,6 +12,7 @@ builder.Services.AddSingleton<IMemoryCache>(new MemoryCache(
         TrackStatistics = true,
         SizeLimit = 50 //Products
     }));
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

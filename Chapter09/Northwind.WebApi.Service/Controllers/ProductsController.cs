@@ -2,6 +2,9 @@
 using Microsoft.Extensions.Caching.Memory; //MemoryCache
 using Microsoft.AspNetCore.Mvc; //[HttpGet] and others
 using Northwind.EntityModels; //NorthwindContext, Product
+using Microsoft.Extensions.Caching.Distributed; // To use IDistributedCache. - Should only be used in dev/test/learn scenarios
+using System.Text.Json; // To use JsonSerializer.
+
 
 namespace Northwind.WebApi.Service.Controllers;
 
@@ -13,13 +16,17 @@ public class ProductsController : ControllerBase
     private readonly ILogger<ProductsController> _logger;
     private readonly NorthwindContext _db;
 
-    private readonly IMemoryCache _cache;
+    private readonly IMemoryCache _memoryCache;
     private const string OutOfStockProductsKey = "OOSP";
-    public ProductsController(ILogger<ProductsController> logger, NorthwindContext context, IMemoryCache cache)
+
+    private readonly IDistributedCache _distributedCache;
+    private const string DiscontinuedProductsKey = "DISCP";
+    public ProductsController(ILogger<ProductsController> logger, NorthwindContext context, IMemoryCache memoryCache, IDistributedCache distributedCache)
     {
         _logger = logger;
         _db = context;
-        _cache = cache;
+        _memoryCache = memoryCache;
+        _distributedCache = distributedCache;
     }
 
     // GET: api/products
@@ -42,7 +49,7 @@ public class ProductsController : ControllerBase
     {
         //Try to get the cached value
 
-        if(!_cache.TryGetValue(OutOfStockProductsKey, out Product[]? cachedValue))
+        if(!_memoryCache.TryGetValue(OutOfStockProductsKey, out Product[]? cachedValue))
         {
             //If the cached value is not found, get the value from the database
             cachedValue = [.. _db.Products.Where(p => p.UnitsInStock == 0 && !p.Discontinued)];
@@ -53,10 +60,10 @@ public class ProductsController : ControllerBase
                 Size = cachedValue?.Length
             };
 
-            _cache.Set(OutOfStockProductsKey, cachedValue, cacheEntryOptions);
+            _memoryCache.Set(OutOfStockProductsKey, cachedValue, cacheEntryOptions);
         }
 
-        MemoryCacheStatistics? stats = _cache.GetCurrentStatistics();
+        MemoryCacheStatistics? stats = _memoryCache.GetCurrentStatistics();
         string message = $"Memeory cache. Total hits: {stats?.TotalHits}. Estimated size: {stats?.CurrentEstimatedSize}.";
         _logger.LogInformation(message);
 
@@ -71,8 +78,22 @@ public class ProductsController : ControllerBase
     [Produces(typeof(Product[]))]
     public IEnumerable<Product> GetDiscontinuedProducts()
     {
-        return _db.Products
-          .Where(product => product.Discontinued);
+        //Try to get the cached value.
+        byte[]? cachedValueBytes = _distributedCache.Get(DiscontinuedProductsKey);
+
+        Product[]? cachedValue;
+
+        if (cachedValueBytes is null)
+        {
+            cachedValue = GetDiscontinuedProductsFromDatabase();
+        }
+        else
+        {
+            cachedValue = JsonSerializer.Deserialize<Product[]?>(cachedValueBytes);
+            cachedValue ??= GetDiscontinuedProductsFromDatabase();
+        }
+
+        return cachedValue ?? Enumerable.Empty<Product>();
     }
 
     // GET api/products/5
@@ -129,6 +150,26 @@ public class ProductsController : ControllerBase
         }
         return NotFound();
     }
+
+    private Product[]? GetDiscontinuedProductsFromDatabase()
+    {
+        Product[]? cachedValue = [.. _db.Products.Where(product => product.Discontinued)];
+
+        DistributedCacheEntryOptions cacheEntryOptions = new()
+        {
+            // Allow readers to reset the cache entry's lifetime.
+            SlidingExpiration = TimeSpan.FromSeconds(5),
+            // Set an absolute expiration time for the cache entry.
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(20),
+        };
+
+        byte[]? cachedValueBytes = JsonSerializer.SerializeToUtf8Bytes(cachedValue);
+
+        _distributedCache.Set(DiscontinuedProductsKey,cachedValueBytes, cacheEntryOptions);
+
+        return cachedValue;
+    }
+
 
 }
 
