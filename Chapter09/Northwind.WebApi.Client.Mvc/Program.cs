@@ -1,3 +1,7 @@
+using Polly; // To use AddTransientHttpErrorPolicy method.
+using Polly.Contrib.WaitAndRetry; // To use Backoff.
+using Polly.Extensions.Http; // To use HttpPolicyExtensions.
+using Polly.Retry; // To use AsyncRetryPolicy<T>
 using System.Net.Http.Headers; // MediaTypeWithQualityHeaderValue
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,13 +9,28 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+IEnumerable<TimeSpan> delays = Backoff.DecorrelatedJitterBackoffV2(
+    medianFirstRetryDelay: TimeSpan.FromSeconds(1), retryCount: 5);
+
+WriteLine("Jittered delays for Polly retries:");
+
+foreach (var delay in delays)
+{
+    WriteLine($"     {delay.TotalSeconds:N2} seconds.");
+}
+
+AsyncRetryPolicy<HttpResponseMessage> retryPolicy = HttpPolicyExtensions
+// Handle network failures, 408 and 5xx status codes.
+.HandleTransientHttpError().WaitAndRetryAsync(delays);
+
 builder.Services.AddHttpClient(name: "Northwind.WebApi.Service",
     configureClient: options =>
     {
         options.BaseAddress = new("https://localhost:5091/");
         options.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue("application/json", 1.0));
-    });
+    })
+    .AddPolicyHandler(retryPolicy);
 
 
 var app = builder.Build();
