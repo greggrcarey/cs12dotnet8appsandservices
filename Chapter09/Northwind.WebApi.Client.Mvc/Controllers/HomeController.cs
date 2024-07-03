@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Northwind.WebApi.Client.Mvc.Models;
 using System.Diagnostics;
 using Northwind.EntityModels;
+using RabbitMQ.Client; //ConnectionFactory
+using System.Text.Json; //JsonSerializer
 
 namespace Northwind.WebApi.Client.Mvc.Controllers;
 
@@ -68,5 +70,72 @@ public class HomeController : Controller
         return View(model);
     }
 
-}
+    public IActionResult SendMessage() { return View(); }
 
+    // POST: home/sendmessage
+    // Body: message=Hello&productId=1
+    [HttpPost]
+    public async Task<IActionResult> SendMessage(string? message, int? productId)
+    {
+        HomeSendMessageViewModel model = new()
+        {
+            Message = new()
+        };
+
+        if (message is null || productId is null)
+        {
+            model.Error = "Please enter a message and a product ID.";
+            return View(model);
+        }
+
+        model.Message.Text = message;
+        model.Message.Product = new() { ProductId = productId.Value };
+
+        HttpClient client = _httpClientFactory.CreateClient(name: "Northwind.WebApi.Service");
+
+        HttpRequestMessage request = new(
+            method: HttpMethod.Get,
+            requestUri: $"api/products/{productId}");
+
+        HttpResponseMessage response = await client.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Product? product = await response.Content.
+            ReadFromJsonAsync<Product>();
+            if (product is not null)
+            {
+                model.Message.Product = product;
+            }
+        }
+
+        // Create a RabbitMQ factory.
+        ConnectionFactory factory = new() { HostName = "localhost" };
+        using IConnection connection = factory.CreateConnection();
+        using IModel channel = connection.CreateModel();
+        string queueNameAndRoutingKey = "product";
+        // If the queue does not exist, it will be created.
+        // If the Docker container is restarted, the queue will be lost.
+        // The queue can be shared with multiple consumers.
+        // The queue will not be deleted when the last message is consumer.
+        channel.QueueDeclare(
+                queue: queueNameAndRoutingKey, 
+                durable: false,
+                exclusive: false, 
+                autoDelete: false, 
+                arguments: null);
+
+        byte[] body = JsonSerializer.SerializeToUtf8Bytes(model.Message);
+        // The exchange is empty because we are using the default exchange.
+        channel.BasicPublish(
+            exchange: string.Empty,
+            routingKey: queueNameAndRoutingKey,
+            basicProperties: null, 
+            body: body);
+
+        model.Info = "Message sent to queue successfully.";
+        //Consuming message from a queue using a console app
+        return View(model);
+    }
+
+}
