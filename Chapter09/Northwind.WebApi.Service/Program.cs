@@ -13,6 +13,7 @@ builder.Services.AddSingleton<IMemoryCache>(new MemoryCache(
         SizeLimit = 50 //Products
     }));
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddResponseCaching();//UseCors must be called before AddResponseCacheing if you are using it.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -49,7 +49,7 @@ public class ProductsController : ControllerBase
     {
         //Try to get the cached value
 
-        if(!_memoryCache.TryGetValue(OutOfStockProductsKey, out Product[]? cachedValue))
+        if (!_memoryCache.TryGetValue(OutOfStockProductsKey, out Product[]? cachedValue))
         {
             //If the cached value is not found, get the value from the database
             cachedValue = [.. _db.Products.Where(p => p.UnitsInStock == 0 && !p.Discontinued)];
@@ -97,6 +97,10 @@ public class ProductsController : ControllerBase
     }
 
     // GET api/products/5
+    [ResponseCache(Duration = 5, // Cache-Control: max-age=5
+    Location = ResponseCacheLocation.Any, // Cache-Control: public
+    VaryByHeader = "User-Agent" // Vary: User-Agent
+    )]
     [HttpGet("{id:int}")]
     public async ValueTask<Product?> Get(int id)
     {
@@ -165,7 +169,7 @@ public class ProductsController : ControllerBase
 
         byte[]? cachedValueBytes = JsonSerializer.SerializeToUtf8Bytes(cachedValue);
 
-        _distributedCache.Set(DiscontinuedProductsKey,cachedValueBytes, cacheEntryOptions);
+        _distributedCache.Set(DiscontinuedProductsKey, cachedValueBytes, cacheEntryOptions);
 
         return cachedValue;
     }
