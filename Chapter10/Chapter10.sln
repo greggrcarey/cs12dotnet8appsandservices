@@ -7,6 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrontab.Console", "NCronta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.AzureFunctions.Service", "Northwind.AzureFunctions.Service\Northwind.AzureFunctions.Service.csproj", "{F99BC4B9-DE52-47AE-8D95-071F5D93BF12}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HttpRequests", "HttpRequests", "{BF9C801D-2E62-463B-91F5-955D1B4EF182}"
+	ProjectSection(SolutionItems) = preProject
+		azurefunctions-scrapeamazon.http = azurefunctions-scrapeamazon.http
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

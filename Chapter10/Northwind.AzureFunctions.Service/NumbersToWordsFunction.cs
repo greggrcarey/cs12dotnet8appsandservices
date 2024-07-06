@@ -5,16 +5,16 @@ using Microsoft.Extensions.Logging;
 
 namespace Northwind.AzureFunctions.Service
 {
-    public class NumbersToWordsFunctions
+    public class NumbersToWordsFunction
     {
         private readonly ILogger _logger;
 
-        public NumbersToWordsFunctions(ILoggerFactory loggerFactory)
+        public NumbersToWordsFunction(ILoggerFactory loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger<NumbersToWordsFunctions>();
+            _logger = loggerFactory.CreateLogger<NumbersToWordsFunction>();
         }
 
-        [Function(nameof(NumbersToWordsFunctions))]
+        [Function(nameof(NumbersToWordsFunction))]
         public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequestData req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");

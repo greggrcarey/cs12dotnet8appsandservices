@@ -1,0 +1,13 @@
+### Configure a variable for the AZ Functions service base address.
+@base_address = http://localhost:5101/
+### Get information about the NumbersToWordsFunction function.
+{{base_address}}admin/functions/NumbersToWordsFunction
+
+### Get information about the ScrapeAmazonFunction function.
+{{base_address}}admin/functions/ScrapeAmazonFunction
+
+### Make a manual request to the Timer function.
+POST {{base_address}}admin/functions/ScrapeAmazonFunction
+Content-Type: application/json
+
+{}
