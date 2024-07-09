@@ -35,3 +35,6 @@ var host = new HostBuilder()
     .Build();
 
 host.Run();
+
+
+//In the Northwind.AzureFunctions.Service project, add a new class named NumbersToChecksFunction.cs.

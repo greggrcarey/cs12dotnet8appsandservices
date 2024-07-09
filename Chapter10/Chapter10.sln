@@ -5,10 +5,11 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrontab.Console", "NCrontab.Console\NCrontab.Console.csproj", "{C2DBA586-4EF2-4C5E-87DA-CF3C8A42D691}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.AzureFunctions.Service", "Northwind.AzureFunctions.Service\Northwind.AzureFunctions.Service.csproj", "{F99BC4B9-DE52-47AE-8D95-071F5D93BF12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.AzureFunctions.Service", "Northwind.AzureFunctions.Service\Northwind.AzureFunctions.Service.csproj", "{F99BC4B9-DE52-47AE-8D95-071F5D93BF12}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HttpRequests", "HttpRequests", "{BF9C801D-2E62-463B-91F5-955D1B4EF182}"
 	ProjectSection(SolutionItems) = preProject
+		azurefunctions-numberstochecks.http = azurefunctions-numberstochecks.http
 		azurefunctions-scrapeamazon.http = azurefunctions-scrapeamazon.http
 	EndProjectSection
 EndProject
