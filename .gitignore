@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/Chapter10/Northwind.AzureFunctions.Service/Properties/ServiceDependencies
+/Chapter10/Northwind.AzureFunctions.Service/Properties/serviceDependencies.functionApTest07102024 - Zip Deploy.json
