@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Common", "Northwind.Common\Northwind.Common.csproj", "{CA0B71E4-2103-4B91-960F-B2EE98B17489}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.SignalR.Service.Client.Mvc", "Northwind.SignalR.Service.Client.Mvc\Northwind.SignalR.Service.Client.Mvc.csproj", "{6479DF19-E7E2-4344-84DF-C9491AAE19B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA0B71E4-2103-4B91-960F-B2EE98B17489}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA0B71E4-2103-4B91-960F-B2EE98B17489}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA0B71E4-2103-4B91-960F-B2EE98B17489}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA0B71E4-2103-4B91-960F-B2EE98B17489}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6479DF19-E7E2-4344-84DF-C9491AAE19B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6479DF19-E7E2-4344-84DF-C9491AAE19B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6479DF19-E7E2-4344-84DF-C9491AAE19B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6479DF19-E7E2-4344-84DF-C9491AAE19B7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DA347549-B992-4ECD-8BA9-D0B0FC813B93}
+	EndGlobalSection
+EndGlobal
