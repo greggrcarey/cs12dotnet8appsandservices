@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.SignalR.Service.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.SignalR.Client.Console", "Northwind.SignalR.Client.Console\Northwind.SignalR.Client.Console.csproj", "{6EABB525-DA57-4D3C-A5B7-E5AB955C740F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.SignalR.Client.Console.Streams", "Northwind.SignalR.Client.Console.Streams\Northwind.SignalR.Client.Console.Streams.csproj", "{190A7459-4B30-4CE2-B693-1A897A7F51F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6EABB525-DA57-4D3C-A5B7-E5AB955C740F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EABB525-DA57-4D3C-A5B7-E5AB955C740F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EABB525-DA57-4D3C-A5B7-E5AB955C740F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{190A7459-4B30-4CE2-B693-1A897A7F51F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{190A7459-4B30-4CE2-B693-1A897A7F51F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{190A7459-4B30-4CE2-B693-1A897A7F51F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{190A7459-4B30-4CE2-B693-1A897A7F51F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
