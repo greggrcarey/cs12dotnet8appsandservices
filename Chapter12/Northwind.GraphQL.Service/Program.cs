@@ -1,10 +1,15 @@
 using Northwind.GraphQL.Service;
+using Northwind.EntityModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddNorthwindContext();
+
 builder.Services
     .AddGraphQLServer()
+    .RegisterDbContext<NorthwindContext>()
     .AddQueryType<Query>();
+
 
 var app = builder.Build();
 
