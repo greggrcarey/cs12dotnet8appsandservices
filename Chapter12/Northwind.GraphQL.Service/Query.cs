@@ -18,6 +18,7 @@ public class Query
         return category;
     }
     [UseFiltering]
+    [UseSorting]
     public IQueryable<Product> GetProducts(NorthwindContext db) => db.Products.Include(p => p.Category);
     [UsePaging]
     public IQueryable<Product> GetProductsWithPaging(NorthwindContext db) => db.Products.Include(p => p.Category);
