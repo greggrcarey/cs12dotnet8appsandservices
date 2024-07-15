@@ -7,6 +7,7 @@ builder.Services.AddNorthwindContext();
 
 builder.Services
     .AddGraphQLServer()
+    .AddFiltering()
     .RegisterDbContext<NorthwindContext>()
     .AddQueryType<Query>();
 
