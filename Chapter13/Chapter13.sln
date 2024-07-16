@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Grpc.Service", "Northwind.Grpc.Service\Northwind.Grpc.Service.csproj", "{3F325AC3-85B1-46B5-998C-567F5F088407}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Grpc.Client.Mvc", "Northwind.Grpc.Client.Mvc\Northwind.Grpc.Client.Mvc.csproj", "{9294CBEB-A9FA-4C58-9E57-3BA5972726FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{3F325AC3-85B1-46B5-998C-567F5F088407}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F325AC3-85B1-46B5-998C-567F5F088407}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F325AC3-85B1-46B5-998C-567F5F088407}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9294CBEB-A9FA-4C58-9E57-3BA5972726FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9294CBEB-A9FA-4C58-9E57-3BA5972726FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9294CBEB-A9FA-4C58-9E57-3BA5972726FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9294CBEB-A9FA-4C58-9E57-3BA5972726FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
