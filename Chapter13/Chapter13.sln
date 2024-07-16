@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Grpc.Service", "Northwind.Grpc.Service\Northwind.Grpc.Service.csproj", "{3F325AC3-85B1-46B5-998C-567F5F088407}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.Grpc.Service", "Northwind.Grpc.Service\Northwind.Grpc.Service.csproj", "{3F325AC3-85B1-46B5-998C-567F5F088407}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Grpc.Client.Mvc", "Northwind.Grpc.Client.Mvc\Northwind.Grpc.Client.Mvc.csproj", "{9294CBEB-A9FA-4C58-9E57-3BA5972726FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.Grpc.Client.Mvc", "Northwind.Grpc.Client.Mvc\Northwind.Grpc.Client.Mvc.csproj", "{9294CBEB-A9FA-4C58-9E57-3BA5972726FB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.Common.DataContext.SqlServer", "..\Chapter03\Northwind.Common.DataContext.SqlServer\Northwind.Common.DataContext.SqlServer.csproj", "{7D358546-B48E-4F2A-B012-FE6B4A57A697}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{9294CBEB-A9FA-4C58-9E57-3BA5972726FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9294CBEB-A9FA-4C58-9E57-3BA5972726FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9294CBEB-A9FA-4C58-9E57-3BA5972726FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D358546-B48E-4F2A-B012-FE6B4A57A697}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D358546-B48E-4F2A-B012-FE6B4A57A697}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D358546-B48E-4F2A-B012-FE6B4A57A697}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D358546-B48E-4F2A-B012-FE6B4A57A697}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

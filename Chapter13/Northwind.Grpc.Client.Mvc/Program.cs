@@ -1,5 +1,4 @@
 using Northwind.Grpc.Client.Mvc;
-using Northwind.Grpc.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +9,13 @@ builder.Services.AddGrpcClient<Greeter.GreeterClient>("Greeter",
     options =>
     {
         options.Address = new Uri("https://localhost:5131");
-    }
-    );
+    });
+
+builder.Services.AddGrpcClient<Shipper.ShipperClient>("Shipper",
+    options =>
+    {
+        options.Address = new Uri("https://localhost:5131");
+    });
 
 var app = builder.Build();
 
