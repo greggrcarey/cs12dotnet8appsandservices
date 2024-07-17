@@ -11,12 +11,17 @@ public class HomeController : Controller
     private readonly ILogger<HomeController> _logger;
     private readonly Greeter.GreeterClient _greeterClient;
     private readonly Shipper.ShipperClient _shipperClient;
+    private readonly Employee.EmployeeClient _employeeClient;
+    private readonly Product.ProductClient _productClient;
 
     public HomeController(ILogger<HomeController> logger, GrpcClientFactory factory)
     {
         _logger = logger;
         _greeterClient = factory.CreateClient<Greeter.GreeterClient>("Greeter");
         _shipperClient = factory.CreateClient<Shipper.ShipperClient>("Shipper");
+        _employeeClient = factory.CreateClient<Employee.EmployeeClient>("Employee");
+        _productClient = factory.CreateClient<Product.ProductClient>("Product");
+
     }
 
     public async Task<IActionResult> Index(string name = "Henrietta", int id = 1)
@@ -60,6 +65,20 @@ public class HomeController : Controller
         }
         return View(model);
     }
+
+    public async Task<IActionResult> Products(decimal minimumPrice = 0M)
+    {
+        ProductsReply reply =  await _productClient.GetProductsMinimumPriceAsync(
+          new ProductsMinimumPriceRequest() { MinimumPrice = minimumPrice });
+        return View(reply.Products);
+    }
+    public async Task<IActionResult> Employees()
+    {
+        EmployeesReply reply = await _employeeClient.GetEmployeesAsync(
+          new EmployeesRequest());
+        return View(reply.Employees);
+    }
+
 
     public IActionResult Privacy()
     {

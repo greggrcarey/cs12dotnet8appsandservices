@@ -27,7 +27,7 @@ public class ProductService : Product.ProductBase
 
         ProductReply? product = null;
 
-        if (await r.ReadAsync())
+        while (await r.ReadAsync())
         {
             product = SqlReaderToProduct(r);
         }
@@ -51,7 +51,7 @@ public class ProductService : Product.ProductBase
         ProductReply? productReply = null;
 
         SqlDataReader r = command.ExecuteReader(CommandBehavior.Default);
-        if (await r.ReadAsync())
+        while (await r.ReadAsync())
         {
             productReply = SqlReaderToProduct(r);
 
@@ -69,19 +69,19 @@ public class ProductService : Product.ProductBase
 
         var command = await GetSqlCommand();
 
+        command.Parameters.AddWithValue("minimumPrice", (decimal)request.MinimumPrice);
         command.CommandText = """
             SELECT ProductId, ProductName, SupplierId, CategoryId, QuantityPerUnit, UnitPrice, 
                    UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued 
             FROM Products 
             WHERE UnitPrice > @minimumPrice
             """;
-        command.Parameters.AddWithValue("id", (decimal)request.MinimumPrice);
 
         ProductsReply? productsReply = new();
         ProductReply? productReply = null;
 
-        SqlDataReader r = command.ExecuteReader(CommandBehavior.Default);
-        if (await r.ReadAsync())
+        SqlDataReader r = command.ExecuteReader();
+        while (await r.ReadAsync())
         {
             productReply = SqlReaderToProduct(r);
 

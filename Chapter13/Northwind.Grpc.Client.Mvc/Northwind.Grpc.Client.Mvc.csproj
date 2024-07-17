@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\decimal.proto" />
+    <None Remove="Protos\employee.proto" />
     <None Remove="Protos\greet.proto" />
+    <None Remove="Protos\product.proto" />
     <None Remove="Protos\shipper.proto" />
   </ItemGroup>
 	
@@ -20,15 +23,17 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.3" />
   </ItemGroup>
 	
 	
 
   <ItemGroup>
+    <Protobuf Include="Protos\decimal.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\employee.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\greet.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos\shipper.proto">
-      <GrpcServices>Client</GrpcServices>
-    </Protobuf>
+    <Protobuf Include="Protos\product.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\shipper.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

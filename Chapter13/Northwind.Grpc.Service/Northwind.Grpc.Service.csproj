@@ -5,8 +5,8 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<InvariantGlobalization>false</InvariantGlobalization>
-		<PublishAot>true</PublishAot>
-		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+<!--		<PublishAot>true</PublishAot>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>-->
 	</PropertyGroup>
 
 	<ItemGroup>

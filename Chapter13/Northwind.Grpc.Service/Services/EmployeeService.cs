@@ -21,7 +21,7 @@ public class EmployeeService : Employee.EmployeeBase
     {
         _logger.LogCritical($"This request has a deadline of {context.Deadline:T}. It is now {DateTime.UtcNow:T}.");
 
-        SqlCommand command = await GetSqlCommand();
+        SqlCommand command = await GetSqlCommandAsync();
         command.CommandText = """
             SELECT EmployeeId, LastName, FirstName, Title, TitleOfCourtesy, BirthDate, HireDate, [Address], 
             City, Region, PostalCode, Country, HomePhone, Extension, Photo, Notes, ReportsTo, PhotoPath
@@ -45,7 +45,7 @@ public class EmployeeService : Employee.EmployeeBase
     {
         _logger.LogCritical($"This request has a deadline of {context.Deadline:T}. It is now {DateTime.UtcNow:T}.");
 
-        SqlCommand command = await GetSqlCommand();
+        SqlCommand command = await GetSqlCommandAsync();
         command.CommandText = """
             SELECT EmployeeId, LastName, FirstName, Title, TitleOfCourtesy, BirthDate, HireDate, [Address], 
             City, Region, PostalCode, Country, HomePhone, Extension, Photo, Notes, ReportsTo, PhotoPath
@@ -91,7 +91,7 @@ public class EmployeeService : Employee.EmployeeBase
         };
     }
 
-    private async Task<SqlCommand> GetSqlCommand()
+    private async Task<SqlCommand> GetSqlCommandAsync()
     {
         SqlConnectionStringBuilder builder = new()
         {
