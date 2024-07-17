@@ -18,20 +18,22 @@ public class ShipperService : Shipper.ShipperBase
     public override async Task<ShipperReply?> GetShipper(ShipperRequest request, ServerCallContext context)
     {
         _logger.LogCritical($"This request has a deadline of {context.Deadline:T}. It is now {DateTime.UtcNow:T}.");
-        await Task.Delay(TimeSpan.FromSeconds(5));
+        //await Task.Delay(TimeSpan.FromSeconds(5));
 
 
         // We cannot use EF Core in a native AOT compiled project.
         // ShipperEntity? shipper = await _db.Shippers
         //   .FindAsync(request.ShipperId);
-        SqlConnectionStringBuilder builder = new();
-        builder.InitialCatalog = "Northwind";
-        builder.MultipleActiveResultSets = true;
-        builder.Encrypt = true;
-        builder.TrustServerCertificate = true;
-        builder.ConnectTimeout = 10; // Default is 30 seconds.
-        builder.DataSource = @"localhost\SQLEXPRESS"; // To use local SQL Server.
-        builder.IntegratedSecurity = true;
+        SqlConnectionStringBuilder builder = new()
+        {
+            InitialCatalog = "Northwind",
+            MultipleActiveResultSets = true,
+            Encrypt = true,
+            TrustServerCertificate = true,
+            ConnectTimeout = 10, // Default is 30 seconds.
+            DataSource = @"localhost\SQLEXPRESS", // To use local SQL Server.
+            IntegratedSecurity = true
+        };
         /*
         // To use SQL Server Authentication:
         builder.UserID = Environment.GetEnvironmentVariable("MY_SQL_USR");
