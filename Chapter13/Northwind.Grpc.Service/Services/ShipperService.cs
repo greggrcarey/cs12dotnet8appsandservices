@@ -2,7 +2,8 @@
 using Northwind.EntityModels; // To use NorthwindContext.
 using ShipperEntity = Northwind.EntityModels.Shipper;
 using Microsoft.Data.SqlClient; //SqlConnection etc
-using System.Data;// CommandType
+using System.Data;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;// CommandType
 
 namespace Northwind.Grpc.Service.Services;
 public class ShipperService : Shipper.ShipperBase
@@ -16,6 +17,10 @@ public class ShipperService : Shipper.ShipperBase
     }
     public override async Task<ShipperReply?> GetShipper(ShipperRequest request, ServerCallContext context)
     {
+        _logger.LogCritical($"This request has a deadline of {context.Deadline:T}. It is now {DateTime.UtcNow:T}.");
+        await Task.Delay(TimeSpan.FromSeconds(5));
+
+
         // We cannot use EF Core in a native AOT compiled project.
         // ShipperEntity? shipper = await _db.Shippers
         //   .FindAsync(request.ShipperId);

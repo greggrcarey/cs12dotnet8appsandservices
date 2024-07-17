@@ -32,7 +32,10 @@ public class HomeController : Controller
             //  $"ID: {shipperReply.ShipperId}, Name: {shipperReply.CompanyName},"
             //  + $" Phone: {shipperReply.Phone}.";
 
-            AsyncUnaryCall<ShipperReply> shipperCall = _shipperClient.GetShipperAsync(new ShipperRequest { ShipperId = id });
+            AsyncUnaryCall<ShipperReply> shipperCall = _shipperClient.GetShipperAsync(
+                new ShipperRequest { ShipperId = id },
+                //Deadline must be a UTC DateTime.
+                deadline: DateTime.UtcNow.AddSeconds(3));
             Metadata metadata = await shipperCall.ResponseHeadersAsync;
             foreach (Metadata.Entry entry in metadata)
             {
@@ -44,6 +47,11 @@ public class HomeController : Controller
               $"ID: {shipperReply.ShipperId}, Name: {shipperReply.CompanyName},"
               + $" Phone: {shipperReply.Phone}.";
 
+        }
+        catch(RpcException rpcex) when (rpcex.StatusCode == global::Grpc.Core.StatusCode.DeadlineExceeded)
+        {
+            _logger.LogWarning("Northwind.Grpc.Service dealine exceded.");
+            model.ErrorMessage = rpcex.Message;
         }
         catch (Exception ex)
         {
