@@ -2,6 +2,7 @@ using Grpc.Net.ClientFactory; //GrpcClientFactory
 using Microsoft.AspNetCore.Mvc;
 using Northwind.Grpc.Client.Mvc.Models;
 using System.Diagnostics;
+using Grpc.Core; //AsyncUnaryCall<T>
 
 namespace Northwind.Grpc.Client.Mvc.Controllers;
 
@@ -26,7 +27,19 @@ public class HomeController : Controller
             HelloReply reply = await _greeterClient.SayHelloAsync(new HelloRequest { Name = name });
             model.Greeting = "Greeting from gRPC service: " + reply.Message;
 
-            ShipperReply shipperReply = await _shipperClient.GetShipperAsync(new ShipperRequest { ShipperId = id });
+            //ShipperReply shipperReply = await _shipperClient.GetShipperAsync(new ShipperRequest { ShipperId = id });
+            //model.ShipperSummary = "Shipper from gRPC service: " +
+            //  $"ID: {shipperReply.ShipperId}, Name: {shipperReply.CompanyName},"
+            //  + $" Phone: {shipperReply.Phone}.";
+
+            AsyncUnaryCall<ShipperReply> shipperCall = _shipperClient.GetShipperAsync(new ShipperRequest { ShipperId = id });
+            Metadata metadata = await shipperCall.ResponseHeadersAsync;
+            foreach (Metadata.Entry entry in metadata)
+            {
+                // Not really critical, just doing this to make it easier to see.
+                _logger.LogCritical($"Key: {entry.Key}, Value: {entry.Value}");
+            }
+            ShipperReply shipperReply = await shipperCall.ResponseAsync;
             model.ShipperSummary = "Shipper from gRPC service: " +
               $"ID: {shipperReply.ShipperId}, Name: {shipperReply.CompanyName},"
               + $" Phone: {shipperReply.Phone}.";
