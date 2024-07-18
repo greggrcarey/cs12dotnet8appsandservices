@@ -1,0 +1,6 @@
+﻿### Configure a variable for the gRPC service base address.
+@base_address = https://localhost:5131/
+### Get Nancy Davolio.
+GET {{base_address}}v1/employee/1
+### Get Andrew Fuller Davolio.
+GET {{base_address}}v1/employee/2

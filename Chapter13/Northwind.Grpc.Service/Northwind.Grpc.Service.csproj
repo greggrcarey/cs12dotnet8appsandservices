@@ -19,6 +19,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Grpc.AspNetCore" Version="2.63.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="8.0.7" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
 	</ItemGroup>
 
