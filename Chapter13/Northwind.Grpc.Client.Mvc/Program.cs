@@ -1,9 +1,13 @@
 using Northwind.Grpc.Client.Mvc;
+using Northwind.Grpc.Client.Mvc.Interceptors;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+// Register the interceptor before attaching it to a gRPC client.
+builder.Services.AddSingleton<ClientLoggingInterceptor>();
+
 
 builder.Services.AddGrpcClient<Greeter.GreeterClient>("Greeter",
     options =>
@@ -25,7 +29,8 @@ builder.Services.AddGrpcClient<Product.ProductClient>("Product",
     options =>
     {
         options.Address = new Uri("https://localhost:5131");
-    });
+    })
+    .AddInterceptor<ClientLoggingInterceptor>();
 
 var app = builder.Build();
 
