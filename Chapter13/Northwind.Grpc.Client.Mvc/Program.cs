@@ -1,3 +1,5 @@
+using Grpc.Core;
+using Grpc.Net.Client.Configuration; //MethodConfig
 using Northwind.Grpc.Client.Mvc;
 using Northwind.Grpc.Client.Mvc.Interceptors;
 
@@ -8,11 +10,31 @@ builder.Services.AddControllersWithViews();
 // Register the interceptor before attaching it to a gRPC client.
 builder.Services.AddSingleton<ClientLoggingInterceptor>();
 
+MethodConfig configForAllMethods = new()
+{
+    Names = { MethodName.Default },
+    RetryPolicy = new RetryPolicy
+    {
+        MaxAttempts = 5,
+        InitialBackoff = TimeSpan.FromSeconds(1),
+        MaxBackoff = TimeSpan.FromSeconds(5),
+        BackoffMultiplier = 1.5,
+        RetryableStatusCodes = { StatusCode.Unavailable }
+    }
+};
+
 
 builder.Services.AddGrpcClient<Greeter.GreeterClient>("Greeter",
     options =>
     {
         options.Address = new Uri("https://localhost:5131");
+    })
+    .ConfigureChannel(channel =>
+    {
+        channel.ServiceConfig = new ServiceConfig
+        {
+            MethodConfigs = { configForAllMethods }
+        };
     });
 
 builder.Services.AddGrpcClient<Shipper.ShipperClient>("Shipper",
