@@ -17,14 +17,29 @@ namespace Northwind.Mvc.Controllers
             _db = northwindContext;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string? id = null, string? country = null)
         {
+            //Initial Model
             IEnumerable<Order> model = _db.Orders
-              .Include(order => order.Customer)
-              .Include(order => order.OrderDetails)
-              .OrderByDescending(order => order.OrderDetails
-                .Sum(detail => detail.Quantity * detail.UnitPrice))
-              .AsEnumerable();
+                .Include(order => order.Customer)
+                .Include(order => order.OrderDetails);
+
+            if (id is not null)
+            {
+                model = model.Where(order => order.Customer?.CustomerId == id);
+            }
+            else if (country is not null) 
+            { 
+                model = model.Where(order => order.Customer?.Country == country);
+            }
+
+            //Add ordering and make enumerable
+
+            model = model
+                .OrderByDescending(order => order.OrderDetails
+                    .Sum(detail => detail.Quantity * detail.UnitPrice))
+                .AsEnumerable();
+
             return View(model);
         }
 
@@ -32,6 +47,11 @@ namespace Northwind.Mvc.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public IActionResult Shipper(Shipper shipper)
+        {
+            return View(shipper);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
