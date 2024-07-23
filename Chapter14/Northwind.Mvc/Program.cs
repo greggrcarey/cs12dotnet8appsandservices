@@ -60,4 +60,3 @@ app.MapRazorPages();
 
 app.Run();
 
-//Understanding Razor syntax and expressions

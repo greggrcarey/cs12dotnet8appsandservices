@@ -49,6 +49,14 @@ namespace Northwind.Mvc.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ProcessShipper(Shipper shipper)
+        {
+            return Json(shipper);
+        }
+
+
         public IActionResult Shipper(Shipper shipper)
         {
             return View(shipper);
