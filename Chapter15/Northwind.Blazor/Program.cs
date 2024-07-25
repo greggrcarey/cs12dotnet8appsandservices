@@ -1,9 +1,11 @@
+using Northwind.EntityModels; //AddNorthwindContext
 using Northwind.Blazor.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorComponents();
+builder.Services.AddRazorComponents().AddInteractiveServerComponents();//Required for interactivity
+builder.Services.AddNorthwindContext();
 
 var app = builder.Build();
 
@@ -20,6 +22,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapRazorComponents<App>();
+app.MapRazorComponents<App>().AddInteractiveServerRenderMode();//Required for interactivity
 
 app.Run();

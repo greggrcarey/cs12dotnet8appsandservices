@@ -1,0 +1,14 @@
+﻿@rendermode InteractiveServer //Required for interactivity
+<h3>Counter: @CounterValue</h3>
+<button id="buttonIncrement" @onclick="IncrementCounter"
+        class="btn btn-outline-primary">
+    Increment
+</button>
+<!--Some interactivity. This component uses SignalR to update the browser DOM-->
+@code {
+    public int CounterValue { get; set; } = 0;
+    public void IncrementCounter()
+    {
+        CounterValue++;
+    }
+}
