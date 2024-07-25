@@ -1,5 +1,5 @@
 ﻿@page "/"
-
+@rendermode InteractiveServer
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, Balzor Full Stack</h1>
@@ -17,6 +17,22 @@ Welcome to your new app.
         </div>
     </div>
     <div class="col">
-        More components coming soon.
+        <DialogBox DialogTitle="Delete Database"
+                   PrimaryButtonText="Yes" OnClickPrimary="Yes_Click"
+                   SecondaryButtonText="No" OnClickSecondary="No_Click">
+            Are you sure you want to delete the entire database? Really?
+        </DialogBox>
     </div>
 </div>
+@code {
+    private void Yes_Click(MouseEventArgs e)
+    {
+        Console.WriteLine("User clicked 'Primary' button at ({0}, {1}).",
+          arg0: e.ClientX, arg1: e.ClientY);
+    }
+    private void No_Click(MouseEventArgs e)
+    {
+        Console.WriteLine("User clicked 'Secondary' button at ({0}, {1}).",
+          arg0: e.ClientX, arg1: e.ClientY);
+    }
+}
