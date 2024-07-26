@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.Blazor", "Northwi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.Common.DataContext.SqlServer", "..\Chapter03\Northwind.Common.DataContext.SqlServer\Northwind.Common.DataContext.SqlServer.csproj", "{51659468-A28E-42BC-88ED-AFBF775EFC98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.MinimalApi.Service", "Northwind.MinimalApi.Service\Northwind.MinimalApi.Service.csproj", "{BBB838CA-A6C4-42A7-AA5B-CFF13A55E180}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{51659468-A28E-42BC-88ED-AFBF775EFC98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51659468-A28E-42BC-88ED-AFBF775EFC98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51659468-A28E-42BC-88ED-AFBF775EFC98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBB838CA-A6C4-42A7-AA5B-CFF13A55E180}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBB838CA-A6C4-42A7-AA5B-CFF13A55E180}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBB838CA-A6C4-42A7-AA5B-CFF13A55E180}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBB838CA-A6C4-42A7-AA5B-CFF13A55E180}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

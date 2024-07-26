@@ -1,11 +1,22 @@
 using Northwind.EntityModels; //AddNorthwindContext
 using Northwind.Blazor.Components;
+using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();//Required for interactivity
 builder.Services.AddNorthwindContext();
+
+builder.Services.AddHttpClient(name: "Northwind.Blazor.Service",
+  configureClient: options =>
+  {
+      options.BaseAddress = new("https://localhost:5153/");
+      options.DefaultRequestHeaders.Accept.Add(
+        new MediaTypeWithQualityHeaderValue(
+          "application/json", 1.0));
+  });
+
 
 var app = builder.Build();
 
