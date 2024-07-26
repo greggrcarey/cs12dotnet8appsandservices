@@ -24,6 +24,13 @@ Welcome to your new app.
         </DialogBox>
     </div>
 </div>
+<Alert IsDismissable="true"
+       Icon="@(BootstrapIcons.Globe)"
+       ColorTheme="@(BootstrapColors.Success)"
+       Title="Yo!"
+       Message="Deleting the database cannot be undone." />
+
+
 @code {
     private void Yes_Click(MouseEventArgs e)
     {
