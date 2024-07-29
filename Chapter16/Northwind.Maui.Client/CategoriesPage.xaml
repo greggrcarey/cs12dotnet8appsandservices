@@ -8,6 +8,6 @@
             Text="Categories"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <Button Text="Click Me" WidthRequest="100"/>
+        <Button Text="Click Me" WidthRequest="100" x:Name="ClickMeButton" Clicked="ClickMeButton_Click"/>
     </VerticalStackLayout>
 </ContentPage>

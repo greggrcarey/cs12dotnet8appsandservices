@@ -6,4 +6,9 @@ public partial class CategoriesPage : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void ClickMeButton_Click(object sender, EventArgs e)
+    {
+		ClickMeButton.Text = DateTime.Now.ToString("hh:mm:ss");
+    }
 }
